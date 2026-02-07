@@ -1,0 +1,207 @@
+from IPython.display import display, HTML
+
+display(HTML("""
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Valentine for Amin 💖</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+body{
+  margin:0;
+  font-family:Poppins, sans-serif;
+  background:linear-gradient(135deg,#ff5f9e,#ffc371);
+  color:white;
+}
+.container{
+  max-width:420px;
+  margin:auto;
+  padding:20px;
+}
+.card{
+  background:rgba(255,255,255,0.15);
+  border-radius:20px;
+  padding:20px;
+  margin-bottom:20px;
+}
+button{
+  padding:12px 20px;
+  border:none;
+  border-radius:30px;
+  font-size:16px;
+  margin-top:10px;
+  cursor:pointer;
+}
+.yes{background:#00ff9c;}
+.no{background:#ff4b5c; position:relative;}
+textarea,input{
+  width:100%;
+  border-radius:12px;
+  padding:12px;
+  border:none;
+  margin-top:10px;
+}
+.gif{
+  width:100%;
+  border-radius:16px;
+}
+#lockScreen{
+  position:fixed;
+  inset:0;
+  background:linear-gradient(135deg,#ff5f9e,#ffc371);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  z-index:9999;
+}
+</style>
+</head>
+
+<body>
+
+<div id="lockScreen">
+  <div class="card">
+    <h2>🔐 Enter Password</h2>
+    <p>Hint: my name 😌</p>
+    <input type="password" id="appPwd">
+    <button class="yes" id="unlockBtn">Unlock 💖</button>
+    <p id="err"></p>
+  </div>
+</div>
+
+<div class="container">
+
+<div class="card">
+<h2>💖 Valentine App 💖</h2>
+<p>From <b>Rahnuma</b> to <b>Amin</b></p>
+</div>
+
+<div class="card">
+<img id="gif" class="gif"
+src="https://media.giphy.com/media/MDJ9IbxxvDUQM/giphy.gif">
+</div>
+
+<div class="card">
+<h3>1️⃣ Will you be my Valentine?</h3>
+<button class="yes" id="yes1">YES 💖</button>
+<button class="no" id="no1">NO 😏</button>
+</div>
+
+<div class="card">
+<h3>2️⃣ Will you marry me? 💍</h3>
+<button class="yes" id="yes2">YES 💍</button>
+<button class="no" id="no2">NO 😅</button>
+</div>
+
+<div class="card">
+<h3>3️⃣ What gift do you like the most?</h3>
+<textarea id="q3"></textarea>
+</div>
+
+<div class="card">
+<h3>4️⃣ What do you expect from me on your special days?</h3>
+<textarea id="q4"></textarea>
+</div>
+
+<div class="card">
+<h3>5️⃣ What habit of mine attracts you?</h3>
+<textarea id="q5"></textarea>
+</div>
+
+<div class="card">
+<h3>6️⃣ Message for Rahnuma 💌</h3>
+<textarea id="q6"></textarea>
+</div>
+
+<div class="card">
+<h3>📸 Photo Booth</h3>
+<video id="video" autoplay width="100%"></video><br>
+<button id="camBtn">Open Camera</button>
+<button id="snapBtn">Take Photo</button>
+<canvas id="canvas" width="320" height="240" style="display:none"></canvas>
+<a id="download" download="Amin.png">Download Photo 💾</a>
+</div>
+
+<div class="card">
+<button class="yes" id="submitBtn">Submit ❤️ Forever</button>
+<p id="lockMsg"></p>
+</div>
+
+<div class="card">
+<h3>🔒 Secret (Rahnuma Only)</h3>
+<input type="password" id="secretPwd">
+<button id="secretBtn">View Answers 👀</button>
+<div id="secretBox"></div>
+</div>
+
+</div>
+
+<script>
+// unlock
+document.getElementById("unlockBtn").addEventListener("click",()=>{
+ const pwd=document.getElementById("appPwd").value.toLowerCase();
+ if(pwd==="amin"){
+   document.getElementById("lockScreen").style.display="none";
+ } else {
+   document.getElementById("err").innerText="❌ Wrong password";
+ }
+});
+
+// yes gif
+document.getElementById("yes1").onclick=
+document.getElementById("yes2").onclick=()=>{
+ document.getElementById("gif").src=
+ "https://media.giphy.com/media/l2QDM9Jnim1YVILXa/giphy.gif";
+};
+
+// moving no
+function move(btn){
+ btn.style.left=Math.random()*120+"px";
+ btn.style.top=Math.random()*50+"px";
+}
+document.getElementById("no1").onmouseover=()=>move(no1);
+document.getElementById("no2").onmouseover=()=>move(no2);
+
+// camera
+document.getElementById("camBtn").onclick=()=>{
+ navigator.mediaDevices.getUserMedia({video:true})
+ .then(s=>video.srcObject=s);
+};
+document.getElementById("snapBtn").onclick=()=>{
+ const c=canvas.getContext("2d");
+ canvas.style.display="block";
+ c.drawImage(video,0,0,320,240);
+ download.href=canvas.toDataURL();
+};
+
+// save answers
+let saved={};
+document.getElementById("submitBtn").onclick=()=>{
+ saved={
+  gift:q3.value,
+  expect:q4.value,
+  habit:q5.value,
+  message:q6.value
+ };
+ lockMsg.innerText="🔒 Locked Forever 💍";
+};
+
+// secret
+document.getElementById("secretBtn").onclick=()=>{
+ if(secretPwd.value==="rahnuma"){
+  secretBox.innerHTML=`
+  <p><b>Gift:</b> ${saved.gift}</p>
+  <p><b>Expect:</b> ${saved.expect}</p>
+  <p><b>Habit:</b> ${saved.habit}</p>
+  <p><b>Message:</b> ${saved.message}</p>`;
+ } else {
+  secretBox.innerText="❌ Wrong password";
+ }
+};
+</script>
+
+</body>
+</html>
+"""))
